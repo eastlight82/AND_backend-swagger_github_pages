@@ -8,68 +8,11 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 paths:
-  "/loss-cases/{id}":
-    get:
-      tags:
-      - loss-case-controller
-      operationId: get
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        '200':
-          description: OK
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/LossCase"
-    put:
-      tags:
-      - loss-case-controller
-      operationId: update
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/LossCase"
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/LossCase"
-    delete:
-      tags:
-      - loss-case-controller
-      operationId: delete
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        '200':
-          description: OK
-  "/api/quests/{questId}":
+  "/quests/{questId}":
     put:
       tags:
       - quest-controller
-      operationId: update_1
+      operationId: update
       parameters:
       - name: questId
         in: path
@@ -93,7 +36,7 @@ paths:
     delete:
       tags:
       - quest-controller
-      operationId: delete_1
+      operationId: delete
       parameters:
       - name: questId
         in: path
@@ -104,6 +47,101 @@ paths:
       responses:
         '200':
           description: OK
+  "/loss-cases/{id}":
+    get:
+      tags:
+      - loss-case-controller
+      operationId: get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/LossCase"
+    put:
+      tags:
+      - loss-case-controller
+      operationId: update_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LossCase"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/LossCase"
+    delete:
+      tags:
+      - loss-case-controller
+      operationId: delete_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+  "/quests":
+    get:
+      tags:
+      - quest-controller
+      operationId: list
+      parameters:
+      - name: lossCaseId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/QuestResponse"
+    post:
+      tags:
+      - quest-controller
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/QuestCreateRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/QuestResponse"
   "/qna/questions":
     post:
       tags:
@@ -167,11 +205,29 @@ paths:
             "*/*":
               schema:
                 "$ref": "#/components/schemas/QnaA"
+  "/pretest/submit":
+    post:
+      tags:
+      - pre-test-controller
+      operationId: submit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PreTestSubmitRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/PreTestSubmitResponse"
   "/loss-cases":
     get:
       tags:
       - loss-case-controller
-      operationId: list
+      operationId: list_1
       responses:
         '200':
           description: OK
@@ -184,7 +240,7 @@ paths:
     post:
       tags:
       - loss-case-controller
-      operationId: create
+      operationId: create_1
       requestBody:
         content:
           application/json:
@@ -198,6 +254,44 @@ paths:
             "*/*":
               schema:
                 "$ref": "#/components/schemas/LossCase"
+  "/diaries":
+    get:
+      tags:
+      - diary-controller
+      operationId: list_2
+      parameters:
+      - name: lossCaseId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/DiaryResponse"
+    post:
+      tags:
+      - diary-controller
+      operationId: create_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DiaryCreateRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/DiaryResponse"
   "/chat/rooms":
     post:
       tags:
@@ -221,7 +315,7 @@ paths:
     get:
       tags:
       - chat-controller
-      operationId: list_1
+      operationId: list_3
       parameters:
       - name: roomId
         in: path
@@ -281,101 +375,7 @@ paths:
             "*/*":
               schema:
                 "$ref": "#/components/schemas/ChatRoom"
-  "/api/quests":
-    get:
-      tags:
-      - quest-controller
-      operationId: list_2
-      parameters:
-      - name: lossCaseId
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        '200':
-          description: OK
-          content:
-            "*/*":
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/QuestResponse"
-    post:
-      tags:
-      - quest-controller
-      operationId: create_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/QuestCreateRequest"
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/QuestResponse"
-  "/api/pretest/submit":
-    post:
-      tags:
-      - pre-test-controller
-      operationId: submit
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PreTestSubmitRequest"
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/PreTestSubmitResponse"
-  "/api/diaries":
-    get:
-      tags:
-      - diary-controller
-      operationId: list_3
-      parameters:
-      - name: lossCaseId
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        '200':
-          description: OK
-          content:
-            "*/*":
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/DiaryResponse"
-    post:
-      tags:
-      - diary-controller
-      operationId: create_2
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/DiaryCreateRequest"
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            "*/*":
-              schema:
-                "$ref": "#/components/schemas/DiaryResponse"
-  "/api/pretest/questions":
+  "/pretest/questions":
     get:
       tags:
       - pre-test-controller
@@ -394,7 +394,7 @@ paths:
             "*/*":
               schema:
                 "$ref": "#/components/schemas/PreTestListResponse"
-  "/api/diaries/{diaryId}":
+  "/diaries/{diaryId}":
     delete:
       tags:
       - diary-controller
@@ -411,6 +411,22 @@ paths:
           description: OK
 components:
   schemas:
+    QuestUpdateRequest:
+      type: object
+      properties:
+        text:
+          type: string
+    QuestResponse:
+      type: object
+      properties:
+        questId:
+          type: integer
+          format: int64
+        lossCaseId:
+          type: integer
+          format: int64
+        content:
+          type: string
     LossCase:
       type: object
       properties:
@@ -474,21 +490,13 @@ components:
           format: int32
         gender:
           type: string
-    QuestUpdateRequest:
+    QuestCreateRequest:
       type: object
       properties:
-        text:
-          type: string
-    QuestResponse:
-      type: object
-      properties:
-        questId:
-          type: integer
-          format: int64
         lossCaseId:
           type: integer
           format: int64
-        content:
+        text:
           type: string
     QnaQ:
       type: object
@@ -515,50 +523,6 @@ components:
           type: string
         qnaQ:
           "$ref": "#/components/schemas/QnaQ"
-    ChatRoom:
-      type: object
-      properties:
-        chatRoomId:
-          type: integer
-          format: int64
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        lossCase:
-          "$ref": "#/components/schemas/LossCase"
-    SendReq:
-      type: object
-      properties:
-        sender:
-          type: string
-        text:
-          type: string
-    ChatMessage:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        sender:
-          type: string
-        text:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        chatRoom:
-          "$ref": "#/components/schemas/ChatRoom"
-    QuestCreateRequest:
-      type: object
-      properties:
-        lossCaseId:
-          type: integer
-          format: int64
-        text:
-          type: string
     PreTestAnswerItem:
       type: object
       properties:
@@ -612,6 +576,42 @@ components:
         createdAt:
           type: string
           format: date-time
+    ChatRoom:
+      type: object
+      properties:
+        chatRoomId:
+          type: integer
+          format: int64
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        lossCase:
+          "$ref": "#/components/schemas/LossCase"
+    SendReq:
+      type: object
+      properties:
+        sender:
+          type: string
+        text:
+          type: string
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        sender:
+          type: string
+        text:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        chatRoom:
+          "$ref": "#/components/schemas/ChatRoom"
     PreTestListResponse:
       type: object
       properties:

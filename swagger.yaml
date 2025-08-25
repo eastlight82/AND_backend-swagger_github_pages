@@ -65,6 +65,45 @@ paths:
       responses:
         '200':
           description: OK
+  "/api/quests/{questId}":
+    put:
+      tags:
+      - quest-controller
+      operationId: update_1
+      parameters:
+      - name: questId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/QuestUpdateRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/QuestResponse"
+    delete:
+      tags:
+      - quest-controller
+      operationId: delete_1
+      parameters:
+      - name: questId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
   "/qna/questions":
     post:
       tags:
@@ -242,12 +281,140 @@ paths:
             "*/*":
               schema:
                 "$ref": "#/components/schemas/ChatRoom"
+  "/api/quests":
+    get:
+      tags:
+      - quest-controller
+      operationId: list_2
+      parameters:
+      - name: lossCaseId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/QuestResponse"
+    post:
+      tags:
+      - quest-controller
+      operationId: create_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/QuestCreateRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/QuestResponse"
+  "/api/pretest/submit":
+    post:
+      tags:
+      - pre-test-controller
+      operationId: submit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PreTestSubmitRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/PreTestSubmitResponse"
+  "/api/diaries":
+    get:
+      tags:
+      - diary-controller
+      operationId: list_3
+      parameters:
+      - name: lossCaseId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/DiaryResponse"
+    post:
+      tags:
+      - diary-controller
+      operationId: create_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DiaryCreateRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/DiaryResponse"
+  "/api/pretest/questions":
+    get:
+      tags:
+      - pre-test-controller
+      operationId: load
+      parameters:
+      - name: lossCaseId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/PreTestListResponse"
+  "/api/diaries/{diaryId}":
+    delete:
+      tags:
+      - diary-controller
+      operationId: delete_2
+      parameters:
+      - name: diaryId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
 components:
   schemas:
     LossCase:
       type: object
       properties:
-        id:
+        lossCaseId:
           type: integer
           format: int64
         subject:
@@ -306,6 +473,22 @@ components:
           type: integer
           format: int32
         gender:
+          type: string
+    QuestUpdateRequest:
+      type: object
+      properties:
+        text:
+          type: string
+    QuestResponse:
+      type: object
+      properties:
+        questId:
+          type: integer
+          format: int64
+        lossCaseId:
+          type: integer
+          format: int64
+        content:
           type: string
     QnaQ:
       type: object
@@ -368,3 +551,97 @@ components:
           format: date-time
         chatRoom:
           "$ref": "#/components/schemas/ChatRoom"
+    QuestCreateRequest:
+      type: object
+      properties:
+        lossCaseId:
+          type: integer
+          format: int64
+        text:
+          type: string
+    PreTestAnswerItem:
+      type: object
+      properties:
+        questionId:
+          type: integer
+          format: int64
+        optionId:
+          type: integer
+          format: int64
+    PreTestSubmitRequest:
+      type: object
+      properties:
+        lossCaseId:
+          type: integer
+          format: int64
+        answers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PreTestAnswerItem"
+    PreTestSubmitResponse:
+      type: object
+      properties:
+        lossCaseId:
+          type: integer
+          format: int64
+        answeredCount:
+          type: integer
+          format: int32
+        totalScore:
+          type: integer
+          format: int32
+    DiaryCreateRequest:
+      type: object
+      properties:
+        lossCaseId:
+          type: integer
+          format: int64
+        text:
+          type: string
+    DiaryResponse:
+      type: object
+      properties:
+        diaryId:
+          type: integer
+          format: int64
+        lossCaseId:
+          type: integer
+          format: int64
+        text:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    PreTestListResponse:
+      type: object
+      properties:
+        lossCaseId:
+          type: integer
+          format: int64
+        questions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PreTestQuestionRes"
+    PreTestOptionRes:
+      type: object
+      properties:
+        optionId:
+          type: integer
+          format: int64
+        text:
+          type: string
+    PreTestQuestionRes:
+      type: object
+      properties:
+        questionId:
+          type: integer
+          format: int64
+        text:
+          type: string
+        score:
+          type: integer
+          format: int32
+        options:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PreTestOptionRes"

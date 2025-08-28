@@ -51,7 +51,7 @@ paths:
     get:
       tags:
       - loss-case-controller
-      operationId: get
+      operationId: getOne
       parameters:
       - name: id
         in: path
@@ -65,7 +65,7 @@ paths:
           content:
             "*/*":
               schema:
-                "$ref": "#/components/schemas/LossCase"
+                "$ref": "#/components/schemas/LossCaseDto"
     put:
       tags:
       - loss-case-controller
@@ -81,7 +81,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/LossCase"
+              "$ref": "#/components/schemas/LossCaseUpdateRequest"
         required: true
       responses:
         '200':
@@ -89,7 +89,7 @@ paths:
           content:
             "*/*":
               schema:
-                "$ref": "#/components/schemas/LossCase"
+                "$ref": "#/components/schemas/LossCaseDto"
     delete:
       tags:
       - loss-case-controller
@@ -227,7 +227,7 @@ paths:
     get:
       tags:
       - loss-case-controller
-      operationId: list_1
+      operationId: getAll
       responses:
         '200':
           description: OK
@@ -236,7 +236,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/LossCase"
+                  "$ref": "#/components/schemas/LossCaseDto"
     post:
       tags:
       - loss-case-controller
@@ -245,7 +245,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/LossCase"
+              "$ref": "#/components/schemas/LossCaseCreateRequest"
         required: true
       responses:
         '200':
@@ -253,12 +253,12 @@ paths:
           content:
             "*/*":
               schema:
-                "$ref": "#/components/schemas/LossCase"
+                "$ref": "#/components/schemas/LossCaseDto"
   "/diaries":
     get:
       tags:
       - diary-controller
-      operationId: list_2
+      operationId: list_1
       parameters:
       - name: lossCaseId
         in: query
@@ -315,7 +315,7 @@ paths:
     get:
       tags:
       - chat-controller
-      operationId: list_3
+      operationId: list_2
       parameters:
       - name: roomId
         in: path
@@ -442,6 +442,19 @@ paths:
             "*/*":
               schema:
                 "$ref": "#/components/schemas/UserResponse"
+  "/auth/auth/whoami":
+    get:
+      tags:
+      - auth-controller
+      operationId: whoami
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: object
+                additionalProperties: {}
   "/diaries/{diaryId}":
     delete:
       tags:
@@ -474,6 +487,95 @@ components:
           type: integer
           format: int64
         content:
+          type: string
+    LossCaseUpdateRequest:
+      type: object
+      properties:
+        subject:
+          type: string
+          enum:
+          - LOVER
+          - PET
+          - FRIEND
+          - FAMILY
+        withTime:
+          type: string
+          enum:
+          - LESS_6M
+          - M6_TO_1Y
+          - Y1_TO_2Y
+          - Y2_TO_5Y
+          - Y5_TO_10Y
+          - OVER_10Y
+        lossDate:
+          type: string
+          format: date
+        lossReason:
+          type: string
+          enum:
+          - PARTNER_LOST_FEELINGS
+          - I_LOST_FEELINGS
+          - PERSONALITY_GAP
+          - BETRAYAL
+          - SITUATIONAL
+          - UNKNOWN
+        copeWay:
+          type: string
+          enum:
+          - SUPPRESS
+          - EXPRESS
+          - AVOID
+          - ANALYZE
+        photoBase64:
+          type: string
+    LossCaseDto:
+      type: object
+      properties:
+        lossCaseId:
+          type: integer
+          format: int64
+        subject:
+          type: string
+          enum:
+          - LOVER
+          - PET
+          - FRIEND
+          - FAMILY
+        withTime:
+          type: string
+          enum:
+          - LESS_6M
+          - M6_TO_1Y
+          - Y1_TO_2Y
+          - Y2_TO_5Y
+          - Y5_TO_10Y
+          - OVER_10Y
+        lossDate:
+          type: string
+          format: date
+        lossReason:
+          type: string
+          enum:
+          - PARTNER_LOST_FEELINGS
+          - I_LOST_FEELINGS
+          - PERSONALITY_GAP
+          - BETRAYAL
+          - SITUATIONAL
+          - UNKNOWN
+        copeWay:
+          type: string
+          enum:
+          - SUPPRESS
+          - EXPRESS
+          - AVOID
+          - ANALYZE
+    QuestCreateRequest:
+      type: object
+      properties:
+        lossCaseId:
+          type: integer
+          format: int64
+        text:
           type: string
     LossCase:
       type: object
@@ -521,31 +623,6 @@ components:
           format: byte
         users:
           "$ref": "#/components/schemas/Users"
-    Users:
-      type: object
-      properties:
-        usersId:
-          type: integer
-          format: int64
-        email:
-          type: string
-        pw:
-          type: string
-        name:
-          type: string
-        age:
-          type: integer
-          format: int32
-        gender:
-          type: string
-    QuestCreateRequest:
-      type: object
-      properties:
-        lossCaseId:
-          type: integer
-          format: int64
-        text:
-          type: string
     QnaQ:
       type: object
       properties:
@@ -556,6 +633,23 @@ components:
         qnaQId:
           type: integer
           format: int64
+    Users:
+      type: object
+      properties:
+        usersId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+          format: int32
+        gender:
+          type: string
     AnswerReq:
       type: object
       properties:
@@ -602,6 +696,52 @@ components:
         totalScore:
           type: integer
           format: int32
+    LossCaseCreateRequest:
+      type: object
+      properties:
+        subject:
+          type: string
+          enum:
+          - LOVER
+          - PET
+          - FRIEND
+          - FAMILY
+        withTime:
+          type: string
+          enum:
+          - LESS_6M
+          - M6_TO_1Y
+          - Y1_TO_2Y
+          - Y2_TO_5Y
+          - Y5_TO_10Y
+          - OVER_10Y
+        lossDate:
+          type: string
+          format: date
+        lossReason:
+          type: string
+          enum:
+          - PARTNER_LOST_FEELINGS
+          - I_LOST_FEELINGS
+          - PERSONALITY_GAP
+          - BETRAYAL
+          - SITUATIONAL
+          - UNKNOWN
+        copeWay:
+          type: string
+          enum:
+          - SUPPRESS
+          - EXPRESS
+          - AVOID
+          - ANALYZE
+        photoBase64:
+          type: string
+      required:
+      - copeWay
+      - lossDate
+      - lossReason
+      - subject
+      - withTime
     DiaryCreateRequest:
       type: object
       properties:

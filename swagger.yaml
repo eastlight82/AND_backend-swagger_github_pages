@@ -328,13 +328,19 @@ paths:
         schema:
           type: integer
           format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ChatRoomCreateRequest"
+        required: true
       responses:
         '200':
           description: OK
           content:
             "*/*":
               schema:
-                "$ref": "#/components/schemas/ChatRoom"
+                "$ref": "#/components/schemas/ChatRoomResponse"
   "/chat/rooms/{roomId}/messages":
     get:
       tags:
@@ -355,11 +361,11 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/ChatMessage"
+                  "$ref": "#/components/schemas/ChatMessageResponse"
     post:
       tags:
       - chat-controller
-      operationId: updateMsg
+      operationId: addMessage
       parameters:
       - name: roomId
         in: path
@@ -371,7 +377,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/SendReq"
+              "$ref": "#/components/schemas/ChatMessageCreateRequest"
         required: true
       responses:
         '200':
@@ -379,7 +385,7 @@ paths:
           content:
             "*/*":
               schema:
-                "$ref": "#/components/schemas/ChatMessage"
+                "$ref": "#/components/schemas/ChatMessageResponse"
   "/chat/rooms/{roomId}/close":
     post:
       tags:
@@ -398,7 +404,7 @@ paths:
           content:
             "*/*":
               schema:
-                "$ref": "#/components/schemas/ChatRoom"
+                "$ref": "#/components/schemas/ChatRoomResponse"
   "/auth/signup":
     post:
       tags:
@@ -510,7 +516,7 @@ components:
         lossCaseId:
           type: integer
           format: int64
-        content:
+        text:
           type: string
     LossCaseUpdateRequest:
       type: object
@@ -742,10 +748,21 @@ components:
         createdAt:
           type: string
           format: date-time
-    ChatRoom:
+    ChatRoomCreateRequest:
+      type: object
+      properties:
+        lossCaseId:
+          type: integer
+          format: int64
+      required:
+      - lossCaseId
+    ChatRoomResponse:
       type: object
       properties:
         chatRoomId:
+          type: integer
+          format: int64
+        lossCaseId:
           type: integer
           format: int64
         createdAt:
@@ -754,82 +771,25 @@ components:
         updatedAt:
           type: string
           format: date-time
-        lossCase:
-          "$ref": "#/components/schemas/LossCase"
-    LossCase:
-      type: object
-      properties:
-        lossCaseId:
-          type: integer
-          format: int64
-        subject:
-          type: string
-          enum:
-          - LOVER
-          - PET
-          - FRIEND
-          - FAMILY
-        withTime:
-          type: string
-          enum:
-          - LESS_6M
-          - M6_TO_1Y
-          - Y1_TO_2Y
-          - Y2_TO_5Y
-          - Y5_TO_10Y
-          - OVER_10Y
-        lossDate:
-          type: string
-          format: date
-        lossReason:
-          type: string
-          enum:
-          - PARTNER_LOST_FEELINGS
-          - I_LOST_FEELINGS
-          - PERSONALITY_GAP
-          - BETRAYAL
-          - SITUATIONAL
-          - UNKNOWN
-        copeWay:
-          type: string
-          enum:
-          - SUPPRESS
-          - EXPRESS
-          - AVOID
-          - ANALYZE
-        photo:
-          type: string
-          format: byte
-        users:
-          "$ref": "#/components/schemas/Users"
-    Users:
-      type: object
-      properties:
-        usersId:
-          type: integer
-          format: int64
-        email:
-          type: string
-        password:
-          type: string
-        name:
-          type: string
-        age:
-          type: integer
-          format: int32
-        gender:
-          type: string
-    SendReq:
+    ChatMessageCreateRequest:
       type: object
       properties:
         sender:
           type: string
+          minLength: 1
         text:
           type: string
-    ChatMessage:
+          minLength: 1
+      required:
+      - sender
+      - text
+    ChatMessageResponse:
       type: object
       properties:
         id:
+          type: integer
+          format: int64
+        chatRoomId:
           type: integer
           format: int64
         sender:
@@ -839,8 +799,6 @@ components:
         createdAt:
           type: string
           format: date-time
-        chatRoom:
-          "$ref": "#/components/schemas/ChatRoom"
     SignupRequest:
       type: object
       properties:

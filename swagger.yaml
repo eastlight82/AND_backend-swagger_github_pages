@@ -533,6 +533,16 @@ components:
           - EXPRESS
           - AVOID
           - ANALYZE
+        lossSubjectFamily:
+          type: string
+          enum:
+          - MOTHER
+          - FATHER
+          - SON
+          - DAUGHTER
+          - BROTHER
+          - SISTER
+          - GRANDFATHER_GRANDMOTHER
         photoBase64:
           type: string
     LossCaseDto:
@@ -593,6 +603,16 @@ components:
           - EXPRESS
           - AVOID
           - ANALYZE
+        lossSubjectFamily:
+          type: string
+          enum:
+          - MOTHER
+          - FATHER
+          - SON
+          - DAUGHTER
+          - BROTHER
+          - SISTER
+          - GRANDFATHER_GRANDMOTHER
     QuestCreateRequest:
       type: object
       properties:
@@ -742,6 +762,16 @@ components:
           - EXPRESS
           - AVOID
           - ANALYZE
+        lossSubjectFamily:
+          type: string
+          enum:
+          - MOTHER
+          - FATHER
+          - SON
+          - DAUGHTER
+          - BROTHER
+          - SISTER
+          - GRANDFATHER_GRANDMOTHER
         photoBase64:
           type: string
       required:

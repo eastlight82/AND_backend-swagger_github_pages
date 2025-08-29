@@ -69,7 +69,7 @@ paths:
     get:
       tags:
       - quest-controller
-      operationId: list
+      operationId: getOne_1
       parameters:
       - name: lossCaseId
         in: query
@@ -219,7 +219,7 @@ paths:
     get:
       tags:
       - diary-controller
-      operationId: list_1
+      operationId: list
       parameters:
       - name: lossCaseId
         in: query
@@ -282,7 +282,7 @@ paths:
     get:
       tags:
       - chat-controller
-      operationId: list_2
+      operationId: list_1
       parameters:
       - name: roomId
         in: path
@@ -508,7 +508,24 @@ components:
           - PERSONALITY_GAP
           - BETRAYAL
           - SITUATIONAL
-          - UNKNOWN
+          - UNSURE_LOVER
+          - NATURAL_DEATH
+          - ILLNESS_ACCIDENT
+          - EUTHANASIA
+          - MISSING
+          - UNSURE_PET
+          - FIGHT
+          - SUDDEN_CUTOFF
+          - NATURSAL_DRIFT
+          - HURTED_BY_FRIEND
+          - COMPLICATED
+          - UNSURE_FRIEND
+          - DEATH_NATURAL
+          - DEATH_ACCIDENT
+          - CUT_OFF
+          - DIVORCE
+          - LONG_TERM_DISTANCE
+          - UNSURE_FAMILY
         copeWay:
           type: string
           enum:
@@ -551,7 +568,24 @@ components:
           - PERSONALITY_GAP
           - BETRAYAL
           - SITUATIONAL
-          - UNKNOWN
+          - UNSURE_LOVER
+          - NATURAL_DEATH
+          - ILLNESS_ACCIDENT
+          - EUTHANASIA
+          - MISSING
+          - UNSURE_PET
+          - FIGHT
+          - SUDDEN_CUTOFF
+          - NATURSAL_DRIFT
+          - HURTED_BY_FRIEND
+          - COMPLICATED
+          - UNSURE_FRIEND
+          - DEATH_NATURAL
+          - DEATH_ACCIDENT
+          - CUT_OFF
+          - DIVORCE
+          - LONG_TERM_DISTANCE
+          - UNSURE_FAMILY
         copeWay:
           type: string
           enum:
@@ -683,7 +717,24 @@ components:
           - PERSONALITY_GAP
           - BETRAYAL
           - SITUATIONAL
-          - UNKNOWN
+          - UNSURE_LOVER
+          - NATURAL_DEATH
+          - ILLNESS_ACCIDENT
+          - EUTHANASIA
+          - MISSING
+          - UNSURE_PET
+          - FIGHT
+          - SUDDEN_CUTOFF
+          - NATURSAL_DRIFT
+          - HURTED_BY_FRIEND
+          - COMPLICATED
+          - UNSURE_FRIEND
+          - DEATH_NATURAL
+          - DEATH_ACCIDENT
+          - CUT_OFF
+          - DIVORCE
+          - LONG_TERM_DISTANCE
+          - UNSURE_FAMILY
         copeWay:
           type: string
           enum:

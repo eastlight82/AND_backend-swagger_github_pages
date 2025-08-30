@@ -69,7 +69,7 @@ paths:
     get:
       tags:
       - quest-controller
-      operationId: getOne_1
+      operationId: get
       parameters:
       - name: lossCaseId
         in: query
@@ -102,12 +102,32 @@ paths:
           content:
             "*/*":
               schema:
-                "$ref": "#/components/schemas/QuestResponse"
+                type: array
+                items:
+                  "$ref": "#/components/schemas/QuestResponse"
   "/qna/questions":
+    get:
+      tags:
+      - qna-controller
+      operationId: getQuestion
+      parameters:
+      - name: lossCaseId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/QuestionResponse"
     post:
       tags:
       - qna-controller
-      operationId: addQuestion
+      operationId: createQuestion
       requestBody:
         content:
           application/json:
@@ -603,7 +623,7 @@ components:
           - EXPRESS
           - AVOID
           - ANALYZE
-        lossSubjectFamily:
+        subjectFamily:
           type: string
           enum:
           - MOTHER
@@ -619,28 +639,22 @@ components:
         lossCaseId:
           type: integer
           format: int64
-        questBankId:
-          type: integer
-          format: int64
+        subject:
+          type: string
+        copeWay:
+          type: string
     QuestResponse:
       type: object
       properties:
         questId:
           type: integer
           format: int64
-        lossCaseId:
-          type: integer
-          format: int64
-        questBankId:
-          type: integer
-          format: int64
+        text:
+          type: string
     QuestionCreateRequest:
       type: object
       properties:
         lossCaseId:
-          type: integer
-          format: int64
-        qnaQBankId:
           type: integer
           format: int64
       required:
@@ -651,12 +665,8 @@ components:
         id:
           type: integer
           format: int64
-        lossCaseId:
-          type: integer
-          format: int64
-        qnaQBankId:
-          type: integer
-          format: int64
+        text:
+          type: string
     AnswerCreateRequest:
       type: object
       properties:
